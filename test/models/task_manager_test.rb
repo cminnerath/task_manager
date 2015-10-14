@@ -1,6 +1,12 @@
 require_relative '../test_helper'
 
 class TaskManagerTest < Minitest::Test
+
+  def create_tasks(num)
+    TaskManager.create({:title       => 'title#{num}',
+                        :description => 'description#{num}'})
+  end
+
   def test_it_creates_a_task
     TaskManager.create({:title       => 'My title',
                         :description => 'get stuff done'})
@@ -41,8 +47,8 @@ class TaskManagerTest < Minitest::Test
   end
 
   def test_it_can_update_a_previously_added_task
-    TaskManager.create({:title       => 'My title',
-                        :description => 'get stuff done'})
+    TaskManager.create({   :title       => 'My title',
+                           :description => 'get stuff done'})
     TaskManager.update(1, {:title       => 'My Second title',
                            :description => 'not getting things done'})
     task = TaskManager.find(1)
@@ -59,6 +65,7 @@ class TaskManagerTest < Minitest::Test
     TaskManager.delete(1)
     tasks = TaskManager.all
 
+    assert_equal 1, tasks.count
     assert_equal 2, tasks[0].id
     assert_equal 'second title', tasks[0].title
     assert_equal nil, tasks[1]
