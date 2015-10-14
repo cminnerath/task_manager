@@ -7,15 +7,15 @@ class TaskManager
       database['tasks'] ||= []
       database['total'] ||= 0
       database['total'] += 1
-      database['tasks'] << { "id" => database['total'], "title" => task[:title], "description" => task[:description] }
+      database['tasks'] << { 'id' => database['total'], 'title' => task[:title], 'description' => task[:description] }
     end
   end
 
   def self.database
-    if ENV["RACK_ENV"] == "test"
-      @database ||= YAML::Store.new("db/task_manager_test")
+    if ENV['RACK_ENV'] == 'test'
+      @database ||= YAML::Store.new('db/task_manager_test')
     else
-      @database ||= YAML::Store.new("db/task_manager")
+      @database ||= YAML::Store.new('db/task_manager')
     end
   end
 
@@ -30,7 +30,7 @@ class TaskManager
   end
 
   def self.raw_task(id)
-    raw_tasks.find { |task| task["id"] == id }
+    raw_tasks.find { |task| task['id'] == id }
   end
 
   def self.find(id)
@@ -39,15 +39,15 @@ class TaskManager
 
   def self.update(id, task)
     database.transaction do
-      target = database['tasks'].find { |data| data["id"] == id }
-      target["title"] = task[:title]
-      target["description"] = task[:description]
+      target = database['tasks'].find { |data| data['id'] == id }
+      target['title'] = task[:title]
+      target['description'] = task[:description]
     end
   end
 
   def self.delete(id)
     database.transaction do
-      database['tasks'].delete_if { |task| task["id"] == id }
+      database['tasks'].delete_if { |task| task['id'] == id }
     end
   end
 
